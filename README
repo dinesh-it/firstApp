@@ -1,1 +1,5 @@
-Run script/firstapp_server.pl to test the application.
+Run script/firstapp_server.pl to test the application
+
+In Browser type this URL after you run the above command in the Project Directory.
+
+http://localhost:3000/calc
