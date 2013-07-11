@@ -1,0 +1,215 @@
+<html>
+<head>
+<title>Calculator</title>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript">
+var val1=0;
+var val2=0;
+var result=0;
+var op;
+var calcFlag=0;
+function append(number){
+	var val=document.getElementById("disp").value;
+	if(parseInt(val) != 0 && calcFlag==0)
+	{
+		val = val + number.value;
+	}
+	else
+	{
+		val = number.value;
+		calcFlag=0;
+	}
+	document.getElementById("disp").value=val;
+}
+
+function clear1() {
+	document.getElementById("disp").value="0";
+	val2=0;
+}
+
+function add() {
+	op="add";
+	if(val1 != 0)
+	{
+		val2=document.getElementById("disp").value;
+		calculate();
+	}
+	else
+		val1=document.getElementById("disp").value;
+	calcFlag=1;
+}
+
+function sub() {
+	val1=document.getElementById("disp").value;
+	op="sub";
+	calculate();
+}
+
+function mul() {
+	val1=document.getElementById("disp").value;
+	op="mul";
+	//calculate();
+	calcFlag=1;
+}
+
+function divide() {
+	val1=document.getElementById("disp").value;
+	op="divide";
+	//calculate();
+	calcFlag=1;
+}
+
+function calc() {
+	val2=document.getElementById("disp").value;
+	calculate();
+	op="";
+	val1=0;
+	val2=0;
+}
+
+function calculate() {
+	//Using $.ajax()
+	$.ajax({ 
+		url:"http://localhost:3000/"+op+"/"+val1+"/"+val2 
+	}).done(function(data) {
+			$('#disp').val(data);
+	});
+
+	//Using $.get method - Simplified version of $.ajax - 
+	//$.get will call $.ajax internally
+	/* $.get("http://localhost:3000/"+op+"/"+val1+"/"+val2, function(data) {
+		$("#disp").val(data);
+	}); */
+
+  	//Using $.post method
+        /* $.post("http://localhost:3000/"+op, { a:"20" , b:"30" }, function(data) {
+                $("#disp").val(data);
+        }); */
+
+
+	//Using $(selector).load();
+	//Insert the returned code directly into the document
+	/* $('#val1').load("http://localhost:3000/"+op+"/"+val1+"/"+val2 , function(data) { 
+		$("#disp").val(data);
+	}); */
+
+	result=document.getElementById("disp").value;
+	calcFlag=1;
+	document.getElementById("val1").innerHTML=val1;
+	document.getElementById("val2").innerHTML=val2;
+	document.getElementById("result").innerHTML=result;
+	val1=result;
+}
+</script>
+<style>
+.calc{
+width:150px;
+height:195px;
+border:2px;
+background:grey;
+}
+button{
+width:30px;
+height:30px;
+}
+button:hover{
+background:lightgrey;
+}
+button:active{
+background:grey;
+}
+input{
+width:140px;
+height:30px;
+outline:5px;
+direction:RTL;
+}
+.solar-panel{
+background:#000040;
+}
+</style>
+</head>
+<body>
+<center>
+<h3>Simple Calculator</h3>
+<h5> - Using Catalyst</h5>
+<div class="calc">
+<table>
+<tr>
+	<td colspan="2">
+		<span>CASiO</span>
+	</td>
+	<td colspan="2">
+		<div class="solar-panel"><span>| | | | | | | | | | |</span><div>
+	</td>
+</tr>
+<tr>
+	<td colspan="4">
+		<input type="text" name="disp" id="disp"/>
+	</td>
+</tr>
+<tr>
+	<td>
+		<button value="7" id="7" onclick="append(this);">7</button>
+	</td>
+	<td>
+		<button value="8" id="8" onclick="append(this);">8</button>
+	</td>
+	<td>
+		<button value="9" id="9" onclick="append(this);">9</button>
+	</td>
+	<td>
+		<button name="*" value="*" id="*" onclick="mul();">*</button>
+	</td>
+</tr>
+<tr>    
+        <td>
+                <button value="4" id="4" onclick="append(this);">4</button>
+        </td>   
+        <td>
+                <button value="5" id="5" onclick="append(this);">5</button>
+        </td>
+        <td>
+                <button value="6" id="6" onclick="append(this);">6</button>
+        </td>
+        <td>
+                <button name="/" value="/" id="/" onclick="divide();">/</button>
+        </td>
+</tr>
+<tr>    
+        <td>
+                <button value="1" id="1" onclick="append(this);">1</button>
+        </td>   
+        <td>
+                <button value="2" id="2" onclick="append(this);">2</button>
+        </td>
+        <td>
+                <button value="3" id="3" onclick="append(this);">3</button>
+        </td>
+        <td>
+                <button name="-" value="-" id="-" onclick="sub();">-</button>
+        </td>
+</tr>
+<tr>    
+	<td>
+		<button value="CL" id="CL" onclick="clear1()">CL</button>
+	</td>
+        <td>
+                <button value="0" id="0" onclick="append(this);">0</button>
+        </td>
+        <td>
+                <button name="=" value="=" id="=" onclick="calc();">=</button>
+        </td>
+        <td>
+                <button name="+" value="+" id="+" onclick="add();">+</button>
+        </td>
+</tr>
+</table>
+</div>
+val1=<span id="val1">null</span></br>
+val2=<span id="val2">null</span></br>
+result=<span id="result">null</span></br>
+</center>
+</body>
+</html>
